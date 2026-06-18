@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>ফলহাট — তাজা ফলের বাজার</title>
+<meta name="description" content="রাজশাহী থেকে সরাসরি তাজা আম ও মৌসুমি ফল — অর্ডার করুন, মন্তব্য করুন, রেটিং দিন।" />
+<meta name="theme-color" content="#2F5233" />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="icons/favicon.png" />
+<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@500;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Tiro+Bangla&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div id="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-leaf">🍃</span>
+      <span>
+        <span class="brand-name">ফলহাট</span>
+        <span class="brand-tagline">রাজশাহী থেকে সরাসরি আপনার ঘরে</span>
+      </span>
+    </div>
+    <button id="adminTrigger" class="admin-trigger" aria-label="মেনু">
+      <img src="icons/mango-symbol.png" alt="" />
+    </button>
+  </header>
+
+  <!-- ===================== ক্রেতা ভিউ ===================== -->
+  <main id="buyerView">
+    <section class="hero">
+      <span class="hero-eyebrow">আজকের পসরা</span>
+      <h1>মৌসুমি ফল, একদম খাঁটি ও তাজা</h1>
+      <p>রাজশাহীর বাগান থেকে সরাসরি আনা আম ও অন্যান্য ফল। পরিমাণ দেখে অর্ডার করুন, পরে মন্তব্য ও রেটিং দিয়ে জানান কেমন লাগলো।</p>
+      <span class="hero-stat">🥭 এখন চালু আছে <span id="activeCount">০</span>টি পোস্ট</span>
+    </section>
+
+    <div class="section-label">সব পোস্ট</div>
+    <div id="postsGrid"></div>
+    <div id="emptyState" class="empty-state" hidden>
+      <span class="big">🧺</span>
+      এখনো কোনো ফল আসেনি — কিছুক্ষণ পর আবার দেখুন।
+    </div>
+
+    <footer class="app-footer">ফলহাট • অফিসারদের পরিবারের জন্য তৈরি একটি ছোট্ট সেবা</footer>
+  </main>
+
+  <!-- ===================== বিক্রেতা (এডমিন) ভিউ ===================== -->
+  <main id="sellerView" hidden>
+    <div class="seller-header">
+      <div>
+        <h2 style="font-size:1.3rem;">বিক্রেতা প্যানেল</h2>
+        <span style="font-size:.82rem;color:var(--ink-soft);">পোস্ট তৈরি করুন, অর্ডার ও মন্তব্য দেখুন</span>
+      </div>
+      <div class="seller-actions">
+        <button id="backToBuyerBtn" class="btn btn-ghost btn-sm">ক্রেতা ভিউ</button>
+        <button id="logoutBtn" class="btn btn-danger btn-sm">লগআউট</button>
+      </div>
+    </div>
+
+    <div id="sellerPostsList"></div>
+    <div id="sellerEmptyState" class="empty-state" hidden>
+      <span class="big">🥭</span>
+      এখনো কোনো পোস্ট নেই — নিচের বাটনে চেপে প্রথম পোস্টটি তৈরি করুন।
+    </div>
+
+    <button id="newPostFab" class="btn btn-primary fab">+ নতুন পোস্ট</button>
+  </main>
+
+</div>
+
+<!-- ===================== এডমিন পাসওয়ার্ড মোডাল ===================== -->
+<div id="adminPasswordModal" class="modal modal-small" hidden>
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 style="font-size:1.1rem;">বিক্রেতা প্রবেশ</h3>
+      <button id="adminCancelBtn" class="modal-close" aria-label="বন্ধ করুন">×</button>
+    </div>
+    <form id="adminPasswordForm">
+      <div class="field">
+        <label>পাসওয়ার্ড দিন</label>
+        <input id="adminPasswordInput" type="password" required autocomplete="off" placeholder="••••••••" />
+      </div>
+      <p class="error-text" id="adminPasswordError">পাসওয়ার্ড ভুল হয়েছে।</p>
+      <button type="submit" class="btn btn-leaf btn-block">প্রবেশ করুন</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===================== নতুন/সম্পাদনা পোস্ট মোডাল ===================== -->
+<div id="newPostModal" class="modal" hidden>
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="newPostTitle" style="font-size:1.15rem;">নতুন পোস্ট তৈরি করুন</h3>
+      <button id="newPostCloseBtn" class="modal-close" aria-label="বন্ধ করুন">×</button>
+    </div>
+    <form id="newPostForm">
+      <div class="field">
+        <label>ফলের ধরণ</label>
+        <select id="fruitTypeSelect" name="fruitType" required></select>
+      </div>
+      <div class="field" id="customFruitField" hidden>
+        <label>ফলের নাম লিখুন</label>
+        <input id="customFruitInput" name="customFruitType" placeholder="যেমন: ডালিম" />
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>পরিমাণ</label>
+          <input type="number" min="0" step="0.5" name="quantityAvailable" required placeholder="যেমন: ৫০" />
+        </div>
+        <div class="field">
+          <label>একক</label>
+          <select id="unitSelect" name="unit" required></select>
+        </div>
+      </div>
+      <div class="field">
+        <label>মূল্য (প্রতি একক, টাকা)</label>
+        <input type="number" min="0" step="1" name="pricePerUnit" required placeholder="যেমন: ১২০" />
+      </div>
+      <div class="field">
+        <label>উৎস</label>
+        <input name="source" placeholder="যেমন: রাজশাহী, নিজ বাগান" />
+      </div>
+      <div class="field">
+        <label>প্রাপ্তির সময়</label>
+        <input name="availableTime" placeholder="যেমন: ২২ জুন, বিকালের মধ্যে" />
+      </div>
+      <div class="field">
+        <label>বাড়তি মন্তব্য (ঐচ্ছিক)</label>
+        <textarea name="notes" placeholder="যেমন: একদম গাছ-পাকা, কোনো কার্বাইড ব্যবহার করা হয়নি"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">প্রকাশ করুন</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===================== পোস্ট বিস্তারিত মোডাল (ক্রেতা) ===================== -->
+<div id="postDetailModal" class="modal" hidden>
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 style="font-size:1rem;color:var(--ink-soft);">পোস্ট বিস্তারিত</h3>
+      <button id="detailCloseBtn" class="modal-close" aria-label="বন্ধ করুন">×</button>
+    </div>
+    <div id="detailBody"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

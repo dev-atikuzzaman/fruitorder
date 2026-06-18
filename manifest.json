@@ -1,0 +1,17 @@
+{
+  "name": "ফলহাট — তাজা ফলের বাজার",
+  "short_name": "ফলহাট",
+  "description": "রাজশাহী থেকে সরাসরি তাজা আম ও মৌসুমি ফল অর্ডার করুন, মন্তব্য করুন, রেটিং দিন।",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFF6E8",
+  "theme_color": "#2F5233",
+  "lang": "bn",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
