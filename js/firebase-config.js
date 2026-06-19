@@ -17,7 +17,7 @@ authDomain:"fruitorder-7dd0f.firebaseapp.com",
   projectId:"fruitorder-7dd0f",
   storageBucket:"fruitorder-7dd0f.firebasestorage.app",
   messagingSenderId: "1035777275852",
-  appId: "1:1035777275852:web:c262cf4e2028845d498f69",
+  appId: "1:1035777275852:web:c262cf4e2028845d498f69"
 };
 
 firebase.initializeApp(firebaseConfig);
